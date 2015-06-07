@@ -45,19 +45,16 @@ impl<'a> Game<'a> {
 	fn new(cols: u32, rows: u32, p1: Player, p2: Player) -> Game<'a> {
 		let size = cols * rows;
 		let grid = vec![None; size as usize];
-		Game {
+		let g = Game {
 			cols: cols,
 			rows: rows,
 			grid: grid,
 			active_player: None,
 			p1: p1,
 			p2: p2
-		}
-	}
-
-	fn start(&'a mut self) -> &'a mut Self {
-		self.active_player = Some(&self.p1);
-		self
+		};
+		g.active_player = Some(&g.p1);
+		g
 	}
 
 	fn take_move(&'a mut self, row: u32, col: u32) -> Result<(), GameError> {
@@ -94,13 +91,13 @@ fn human_find_move(player: &Player, board: &Game) -> (u32, u32) {
 }
 
 fn cpu_find_move(player: &Player, board: &Game) -> (u32, u32) {
-	(0, 0)		
+	(0, 0)
 }
 
 
 
 fn main() {
-	
+
 	let p1 = Player {
 		symbol: 'X',
 		find_move: human_find_move
@@ -110,8 +107,7 @@ fn main() {
 		find_move: cpu_find_move
 	};
 
-	let &mut board = Game::new(3, 3, p1, p2).start();
-	board.start();
+	let mut board = Game::new(3, 3, p1, p2);
 	loop {
 		let cont = board.run().ok().unwrap();
 		match cont {
